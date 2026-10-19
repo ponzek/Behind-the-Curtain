@@ -273,7 +273,8 @@ def update(companies, start, end):
                                marker=dict(colors=cols, line=dict(color="#fff", width=4)),
                                textinfo="percent", hovertemplate="%{label}<br>$%{value:,.0f}B traded<extra></extra>"))
     style(f_donut, height=250, hover="closest")
-    f_donut.update_layout(margin=dict(l=10, r=10, t=10, b=40))
+    f_donut.update_layout(margin=dict(l=10, r=10, t=10, b=60), height=270,
+                          legend=dict(orientation="h", x=0.5, xanchor="center", y=-0.05, yanchor="top", font=dict(color=MUTED)))
 
     # Up vs down days donut-like (stacked horizontal 100% bars)
     up = (rets > 0).mean() * 100
@@ -283,8 +284,10 @@ def update(companies, start, end):
         go.Bar(y=[label(t) for t in tick], x=[100 - up[t] for t in tick], orientation="h", name="Down days",
                marker=dict(color="#ffc2d1"), text=[f"{100 - up[t]:.0f}%" for t in tick], hovertemplate="%{x:.1f}% down<extra></extra>"),
     ])
-    style(f_up, xtitle="% of trading days", height=230, hover="closest").update_layout(
-        barmode="stack", margin=dict(l=10, r=10, t=10, b=55))
+    style(f_up, xtitle="% of trading days", height=290, hover="closest").update_layout(
+        barmode="stack", margin=dict(l=10, r=10, t=45, b=60),
+        legend=dict(orientation="h", x=0.5, xanchor="center", y=1.02, yanchor="bottom", font=dict(color=MUTED)))
+    f_up.update_xaxes(title_standoff=12, range=[0, 100])
 
     # Violin: daily-return distribution
     f_dist = go.Figure([go.Violin(y=rets[t] * 100, name=label(t), box_visible=True, meanline_visible=True,
